@@ -1,47 +1,49 @@
+const config = {
+  speed: 0.2,
+  apsis: 0.003
+};
+
 const planetData = [
   {
     color: 'gold',
-    radius: 40,
+    radius: 20,
     start_angle: 0,
     apsis: 0,
     velocity: 0,
   },
   {
     color: 'red',
-    radius: 6,
+    radius: 5,
     start_angle: 0,
-    apsis: 150,
-    velocity: 0.005,
+    apsis: 57.9,
+    velocity: 1/58,
   },
   {
     color: 'lightyellow',
-    radius: 15,
+    radius: 12,
     start_angle: 0,
-    apsis: 300,
-    velocity: 0.004,
+    apsis: 108.2,
+    velocity: 1/243,
   },
 ];
 
 class Planet {
   constructor(props) {
     this.props = props;
-    // Override with props
-    for (let prop in props) {
-      this[prop] = props[prop];
-    }
     this.angle = this.props.start_angle;
   }
 
   getAngle(time) {
-    return this.angle += this.velocity * time;
+    return this.angle += (this.props.velocity * time * config.speed);
   }
 
   getPosition(angle) {
-    const { apsis } = this.props;
     const center = {
       x: width / 2,
       y: height / 2
     };
+    const apsisMultiplier = Math.min(width, height) * config.apsis;
+    const apsis = Math.round(this.props.apsis * apsisMultiplier);
     return {
       x: apsis * Math.cos(angle) + center.x,
       y: apsis * Math.sin(angle) + center.y
